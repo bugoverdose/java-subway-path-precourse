@@ -5,8 +5,8 @@ import java.util.List;
 
 public class Station {
     private final String name;
-    private final List<DistanceEdge> distanceEdges = new ArrayList<>();
-    private final List<TimeEdge> timeEdges = new ArrayList<>();
+    private final List<DistancePath> nextDistanceEdges = new ArrayList<>();
+    private final List<TimePath> nextTimeEdges = new ArrayList<>();
 
     public Station(String name) {
         this.name = name;
@@ -16,19 +16,19 @@ public class Station {
         return name;
     }
 
-    public List<DistanceEdge> getDistanceEdges() {
-        return distanceEdges;
+    public List<DistancePath> getDistanceEdges() {
+        return nextDistanceEdges;
     }
 
-    public List<TimeEdge> getTimeEdges() {
-        return timeEdges;
+    public List<TimePath> getTimeEdges() {
+        return nextTimeEdges;
     }
 
-    public void addDistanceEdge(DistanceEdge distanceEdge) {
-        distanceEdges.add(distanceEdge);
+    public void addDistanceEdge(DistancePath distancePath) {
+        nextDistanceEdges.add(distancePath);
     }
 
-    public void addTimeEdge(TimeEdge timeEdge) {
-        timeEdges.add(timeEdge);
+    public void addTimeEdge(TimePath timePath) {
+        nextTimeEdges.add(timePath);
     }
 }
