@@ -4,9 +4,9 @@ import subway.domain.Station;
 
 public class OutputMessages {
 
-    private static String INFO = "[INFO] ";
-    public static String LINES = INFO + "---";
+    private static final String INFO = "[INFO] ";
     public static String BLANK_LINE = "\n";
+    public static String LINES = INFO + "---" + BLANK_LINE;
 
     public static String PATH_RESULT_FORMAT = "## 조회 결과" + BLANK_LINE;
 
