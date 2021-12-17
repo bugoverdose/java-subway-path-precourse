@@ -10,6 +10,7 @@ import subway.domain.StationRepository;
 
 import java.util.List;
 
+import static subway.constants.ExceptionMessages.NOT_CONNECTED_EXCEPTION;
 import static subway.utils.InputValidator.validateFindPathInput;
 import static subway.view.InputView.*;
 import static subway.view.OutputView.showPathInfo;
@@ -77,7 +78,11 @@ public class PathService {
         Station endStation = StationRepository.findByName(endStationName);
 
         DijkstraShortestPath dijkstraShortestPath = new DijkstraShortestPath(graph);
-        return dijkstraShortestPath.getPath(startStation, endStation).getVertexList();
+        try {
+            return dijkstraShortestPath.getPath(startStation, endStation).getVertexList();
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException(NOT_CONNECTED_EXCEPTION);
+        }
     }
 
     private void printPathInfo(List<Station> path) {
