@@ -1,7 +1,5 @@
 package subway.domain;
 
-import subway.constants.SystemConstants;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

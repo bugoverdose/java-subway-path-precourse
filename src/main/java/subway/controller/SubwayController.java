@@ -1,6 +1,7 @@
 package subway.controller;
 
 import subway.domain.LineRepository;
+import subway.domain.SectionRepository;
 import subway.domain.StationRepository;
 import subway.service.PathService;
 
@@ -29,5 +30,6 @@ public class SubwayController {
     private void initDatabase() {
         StationRepository.initDatabase();
         LineRepository.initDatabase();
+        SectionRepository.initDatabase();
     }
 }
