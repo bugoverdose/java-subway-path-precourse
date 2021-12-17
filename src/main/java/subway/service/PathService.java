@@ -11,7 +11,6 @@ import subway.utils.RouteGraph;
 
 import java.util.List;
 
-import static subway.constants.ExceptionMessages.NOT_CONNECTED_EXCEPTION;
 import static subway.utils.InputValidator.*;
 import static subway.view.InputView.*;
 import static subway.view.OutputView.showPathInfo;

@@ -20,9 +20,15 @@ public class JGraphtTest {
         graph.setEdgeWeight(graph.addEdge("v2", "v3"), 2);
         graph.setEdgeWeight(graph.addEdge("v1", "v3"), 100);
 
-        DijkstraShortestPath dijkstraShortestPath = new DijkstraShortestPath(graph);
-        List<String> shortestPath = dijkstraShortestPath.getPath("v3", "v1").getVertexList();
+        DijkstraShortestPath dijkstraShortestPath1 = new DijkstraShortestPath(graph);
+        List<String> shortestPath1 = dijkstraShortestPath1.getPath("v3", "v1").getVertexList();
+        System.out.println(shortestPath1);
 
-        assertThat(shortestPath.size()).isEqualTo(3);
+        DijkstraShortestPath dijkstraShortestPath2 = new DijkstraShortestPath(graph);
+        List<String> shortestPath2 = dijkstraShortestPath2.getPath("v1", "v3").getVertexList();
+        System.out.println(shortestPath2);
+
+        assertThat(shortestPath1.size()).isEqualTo(3);
+        assertThat(shortestPath2.size()).isEqualTo(3);
     }
 }
