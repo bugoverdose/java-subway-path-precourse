@@ -41,6 +41,7 @@ public class PathService {
             DistancePath cur = queue.poll();
             Station nextStation = cur.getNextStation();
             if (nextStation == endStation) {
+                cur.getPath().add(0, startStation);
                 showPathInfo(cur.getTotalDistance(), cur.getTotalTime(), cur.getPath());
                 return;
             }
@@ -67,6 +68,7 @@ public class PathService {
             TimePath cur = queue.poll();
             Station nextStation = cur.getNextStation();
             if (nextStation == endStation) {
+                cur.getPath().add(0, startStation);
                 showPathInfo(cur.getTotalDistance(), cur.getTotalTime(), cur.getPath());
                 return;
             }
