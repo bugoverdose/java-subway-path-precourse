@@ -41,15 +41,16 @@ public class PathService {
             DistancePath cur = queue.poll();
             Station nextStation = cur.getNextStation();
             if (nextStation == endStation) {
-                showPathInfo( cur.getTotalDistance(), 0, cur.getPath());
+                showPathInfo(cur.getTotalDistance(), cur.getTotalTime(), cur.getPath());
                 return;
             }
 
             for (DistancePath edge : nextStation.getDistanceEdges()) {
                 List<Station> newPath = new ArrayList<>(cur.getPath());
                 newPath.add(edge.getNextStation());
-                int newTotalTime = edge.getTotalDistance() + cur.getTotalDistance();
-                queue.add(new DistancePath(newPath, newTotalTime));
+                int newTotalDistance = edge.getTotalDistance() + cur.getTotalDistance();
+                int newTotalTime = edge.getTotalTime() + cur.getTotalTime();
+                queue.add(new DistancePath(newPath, newTotalDistance, newTotalTime));
             }
         }
         throw new IllegalArgumentException("");
@@ -66,15 +67,16 @@ public class PathService {
             TimePath cur = queue.poll();
             Station nextStation = cur.getNextStation();
             if (nextStation == endStation) {
-                showPathInfo(0, cur.getTotalTime(), cur.getPath());
+                showPathInfo(cur.getTotalDistance(), cur.getTotalTime(), cur.getPath());
                 return;
             }
 
             for (TimePath edge : nextStation.getTimeEdges()) {
                 List<Station> newPath = new ArrayList<>(cur.getPath());
                 newPath.add(edge.getNextStation());
+                int newTotalDistance = edge.getTotalDistance() + cur.getTotalDistance();
                 int newTotalTime = edge.getTotalTime() + cur.getTotalTime();
-                queue.add(new TimePath(newPath, newTotalTime));
+                queue.add(new TimePath(newPath, newTotalDistance, newTotalTime));
             }
         }
         throw new IllegalArgumentException("");

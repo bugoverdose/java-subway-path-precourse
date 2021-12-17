@@ -36,22 +36,22 @@ public class StationRepository {
     }
 
     private static void registerDistanceEdges() {
-        findByName("교대역").addDistanceEdge(new DistancePath(findByName("강남역"), 2));
-        findByName("강남역").addDistanceEdge(new DistancePath(findByName("역삼역"), 2));
-        findByName("교대역").addDistanceEdge(new DistancePath(findByName("남부터미널역"), 3));
-        findByName("남부터미널역").addDistanceEdge(new DistancePath(findByName("양재역"), 6));
-        findByName("양재역").addDistanceEdge(new DistancePath(findByName("매봉역"), 1));
-        findByName("강남역").addDistanceEdge(new DistancePath(findByName("양재역"), 2));
-        findByName("양재역").addDistanceEdge(new DistancePath(findByName("양재시민의숲역"), 10));
+        findByName("교대역").addDistanceEdge(new DistancePath(findByName("강남역"), 2, 3));
+        findByName("강남역").addDistanceEdge(new DistancePath(findByName("역삼역"), 2, 3));
+        findByName("교대역").addDistanceEdge(new DistancePath(findByName("남부터미널역"), 3, 2));
+        findByName("남부터미널역").addDistanceEdge(new DistancePath(findByName("양재역"), 6, 2));
+        findByName("양재역").addDistanceEdge(new DistancePath(findByName("매봉역"), 1, 5));
+        findByName("강남역").addDistanceEdge(new DistancePath(findByName("양재역"), 2, 8));
+        findByName("양재역").addDistanceEdge(new DistancePath(findByName("양재시민의숲역"), 10, 3));
     }
 
     private static void registerTimeEdges() {
-        findByName("교대역").addTimeEdge(new TimePath(findByName("강남역"), 3));
-        findByName("강남역").addTimeEdge(new TimePath(findByName("역삼역"), 3));
-        findByName("교대역").addTimeEdge(new TimePath(findByName("남부터미널역"), 2));
-        findByName("남부터미널역").addTimeEdge(new TimePath(findByName("양재역"), 5));
-        findByName("양재역").addTimeEdge(new TimePath(findByName("매봉역"), 1));
-        findByName("강남역").addTimeEdge(new TimePath(findByName("양재역"), 8));
-        findByName("양재역").addTimeEdge(new TimePath(findByName("양재시민의숲역"), 3));
+        findByName("교대역").addTimeEdge(new TimePath(findByName("강남역"), 2, 3));
+        findByName("강남역").addTimeEdge(new TimePath(findByName("역삼역"), 2, 3));
+        findByName("교대역").addTimeEdge(new TimePath(findByName("남부터미널역"), 3, 2));
+        findByName("남부터미널역").addTimeEdge(new TimePath(findByName("양재역"), 6, 2));
+        findByName("양재역").addTimeEdge(new TimePath(findByName("매봉역"), 1, 5));
+        findByName("강남역").addTimeEdge(new TimePath(findByName("양재역"), 2, 8));
+        findByName("양재역").addTimeEdge(new TimePath(findByName("양재시민의숲역"), 10, 3));
     }
 }

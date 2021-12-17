@@ -1,21 +1,25 @@
 package subway.domain;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class DistancePath implements Comparable<DistancePath> {
 
     private List<Station> path = new ArrayList<>();
-    private int totalDistance;
+    private final int totalDistance;
+    private final int totalTime;
 
-    public DistancePath(Station nextStation, int distance) {
+    public DistancePath(Station nextStation, int distance, int time) {
         this.path.add(nextStation);
         this.totalDistance = distance;
+        this.totalTime = time;
     }
 
-    public DistancePath(List<Station> path, int totalDistance) {
+    public DistancePath(List<Station> path, int distance, int time) {
         this.path = path;
-        this.totalDistance = totalDistance;
+        this.totalDistance = distance;
+        this.totalTime = time;
     }
 
     public List<Station> getPath() {
@@ -30,7 +34,10 @@ public class DistancePath implements Comparable<DistancePath> {
         return this.totalDistance;
     }
 
-    @Override
+    public int getTotalTime() {
+        return this.totalTime;
+    }
+
     public int compareTo(DistancePath o) {
         return Integer.compare(this.getTotalDistance(), o.getTotalDistance());
     }

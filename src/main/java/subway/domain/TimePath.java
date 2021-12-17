@@ -6,15 +6,18 @@ import java.util.List;
 public class TimePath implements Comparable<TimePath> {
 
     private List<Station> path = new ArrayList<>();
-    private int totalTime;
+    private final int totalDistance;
+    private final int totalTime;
 
-    public TimePath(Station nextStation, int time) {
+    public TimePath(Station nextStation, int distance, int time) {
         this.path.add(nextStation);
+        this.totalDistance = distance;
         this.totalTime = time;
     }
 
-    public TimePath(List<Station> path, int time) {
+    public TimePath(List<Station> path, int distance, int time) {
         this.path = path;
+        this.totalDistance = distance;
         this.totalTime = time;
     }
 
@@ -24,6 +27,10 @@ public class TimePath implements Comparable<TimePath> {
 
     public Station getNextStation() {
         return this.path.get(path.size()-1);
+    }
+
+    public int getTotalDistance() {
+        return this.totalDistance;
     }
 
     public int getTotalTime() {
