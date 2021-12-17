@@ -2,14 +2,11 @@ package subway.domain;
 
 public class DistanceEdge implements Comparable<DistanceEdge> {
 
-    private Station startStation;
-    private Station endStation;
+    private Station nextStation;
     private int distance;
 
-
-    public DistanceEdge(Station startStation, Station endStation, int distance) {
-        this.startStation = startStation;
-        this.endStation = endStation;
+    public DistanceEdge(Station nextStation, int distance) {
+        this.nextStation = nextStation;
         this.distance = distance;
     }
 

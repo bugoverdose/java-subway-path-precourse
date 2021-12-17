@@ -12,4 +12,7 @@ public class InputMessages {
             "1. 최단 거리\n" +
             "2. 최소 시간\n" +
             "B. 돌아가기\n";
+
+    public static String REQUEST_START_STATION_INPUT = "## 출발역을 입력하세요.";
+    public static String REQUEST_END_STATION_INPUT = "## 도착역을 입력하세요.";
 }

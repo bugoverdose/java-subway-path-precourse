@@ -1,7 +1,12 @@
 package subway.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Station {
-    private String name;
+    private final String name;
+    private final List<DistanceEdge> distanceEdges = new ArrayList<>();
+    private final List<TimeEdge> timeEdges = new ArrayList<>();
 
     public Station(String name) {
         this.name = name;
@@ -11,5 +16,19 @@ public class Station {
         return name;
     }
 
-    // 추가 기능 구현
+    public List<DistanceEdge> getDistanceEdges() {
+        return distanceEdges;
+    }
+
+    public List<TimeEdge> getTimeEdges() {
+        return timeEdges;
+    }
+
+    public void addDistanceEdge(DistanceEdge distanceEdge) {
+        distanceEdges.add(distanceEdge);
+    }
+
+    public void addTimeEdge(TimeEdge timeEdge) {
+        timeEdges.add(timeEdge);
+    }
 }

@@ -2,13 +2,11 @@ package subway.domain;
 
 public class TimeEdge implements Comparable<TimeEdge> {
 
-    private Station startStation;
     private Station endStation;
     private int time;
 
 
-    public TimeEdge(Station startStation, Station endStation, int time) {
-        this.startStation = startStation;
+    public TimeEdge(Station endStation, int time) {
         this.endStation = endStation;
         this.time = time;
     }

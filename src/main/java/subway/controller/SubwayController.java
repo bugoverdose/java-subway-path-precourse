@@ -1,9 +1,7 @@
 package subway.controller;
 
-import subway.domain.DistanceEdgeRepository;
 import subway.domain.LineRepository;
 import subway.domain.StationRepository;
-import subway.domain.TimeEdgeRepository;
 import subway.service.PathService;
 
 import static subway.view.InputView.*;
@@ -28,7 +26,5 @@ public class SubwayController {
     private void initDatabase() {
         StationRepository.initDatabase();
         LineRepository.initDatabase();
-        DistanceEdgeRepository.initDatabase();
-        TimeEdgeRepository.initDatabase();
     }
 }
