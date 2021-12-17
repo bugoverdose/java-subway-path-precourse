@@ -7,38 +7,16 @@ import subway.domain.Section;
 import subway.domain.SectionRepository;
 import subway.domain.Station;
 import subway.domain.StationRepository;
+import subway.utils.RouteGraph;
 
 import java.util.List;
 
 import static subway.constants.ExceptionMessages.NOT_CONNECTED_EXCEPTION;
-import static subway.utils.InputValidator.validateFindPathInput;
-import static subway.utils.InputValidator.validatePathMenuInput;
+import static subway.utils.InputValidator.*;
 import static subway.view.InputView.*;
 import static subway.view.OutputView.showPathInfo;
 
 public class PathService {
-
-    private final WeightedMultigraph<Station, DefaultWeightedEdge> distanceGraph
-            = new WeightedMultigraph(DefaultWeightedEdge.class);
-
-    private final WeightedMultigraph<Station, DefaultWeightedEdge> timeGraph
-            = new WeightedMultigraph(DefaultWeightedEdge.class);
-
-    public PathService() {
-        initGraph(distanceGraph);
-        initGraph(timeGraph);
-    }
-
-    private void initGraph(WeightedMultigraph<Station, DefaultWeightedEdge> graph) {
-        for (Station station : StationRepository.stations()) {
-            graph.addVertex(station);
-        }
-
-        for (Section section : SectionRepository.sections()) {
-            DefaultWeightedEdge newEdge = graph.addEdge(section.getCurStation(), section.getNextStation());
-            graph.setEdgeWeight(newEdge, section.getDistance());
-        }
-    }
 
     public void run() {
         boolean isSuccessful = false;
@@ -61,15 +39,15 @@ public class PathService {
 
     private boolean runPathMenuAction(String userChoice) {
         if (userChoice.equals("1")) {
-            return findPath(distanceGraph);
+            return findPath(RouteGraph.getDistanceGraph());
         }
         if (userChoice.equals("2")) {
-            return findPath(timeGraph);
+            return findPath(RouteGraph.getTimeGraph());
         }
         return userChoice.equals("B");
     }
 
-    private boolean findPath(WeightedMultigraph graph) {
+    private boolean findPath(WeightedMultigraph<Station, DefaultWeightedEdge> graph) {
         try {
             List<Station> path = calculateMinimumPath(graph);
             printPathInfo(path);
@@ -80,7 +58,7 @@ public class PathService {
         }
     }
 
-    private List<Station> calculateMinimumPath(WeightedMultigraph graph) {
+    private List<Station> calculateMinimumPath(WeightedMultigraph<Station, DefaultWeightedEdge> graph) {
         String startStationName = requestStartStationInput();
         String endStationName = requestEndStationInput();
         validateFindPathInput(startStationName, endStationName);
@@ -89,11 +67,9 @@ public class PathService {
         Station endStation = StationRepository.findByName(endStationName);
 
         DijkstraShortestPath dijkstraShortestPath = new DijkstraShortestPath(graph);
-        try {
-            return dijkstraShortestPath.getPath(startStation, endStation).getVertexList();
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(NOT_CONNECTED_EXCEPTION);
-        }
+        List<Station> path = dijkstraShortestPath.getPath(startStation, endStation).getVertexList();
+        validatePathConnection(path);
+        return path;
     }
 
     private void printPathInfo(List<Station> path) {

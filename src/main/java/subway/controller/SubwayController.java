@@ -4,11 +4,13 @@ import subway.domain.LineRepository;
 import subway.domain.SectionRepository;
 import subway.domain.StationRepository;
 import subway.service.PathService;
+import subway.utils.RouteGraph;
 
 import static subway.utils.InputValidator.validateMainMenuInput;
 import static subway.view.InputView.*;
 
 public class SubwayController {
+
     private final PathService pathService = new PathService();
 
     public SubwayController() {
@@ -52,5 +54,6 @@ public class SubwayController {
         StationRepository.initDatabase();
         LineRepository.initDatabase();
         SectionRepository.initDatabase();
+        RouteGraph.initRouteGraphs();
     }
 }

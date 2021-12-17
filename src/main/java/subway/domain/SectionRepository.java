@@ -12,8 +12,9 @@ public class SectionRepository {
         return Collections.unmodifiableList(sections);
     }
 
-    private static void addSection(Section section) {
-        sections.add(section);
+    private static void addSection(String lineName, String stationName1, String stationName2, int distance, int time) {
+        sections.add(new Section(lineName, stationName1, stationName2, distance, time));
+        sections.add(new Section(lineName, stationName2, stationName1, distance, time));
     }
 
     public static Section findBySectionByStations(Station startStation, Station nextStation) {
@@ -36,14 +37,14 @@ public class SectionRepository {
     }
 
     public static void initDatabase() {
-        addSection(new Section("2호선", "교대역", "강남역", 2, 3));
-        addSection(new Section("2호선", "강남역", "역삼역", 2, 3));
+        addSection("2호선", "교대역", "강남역", 2, 3);
+        addSection("2호선", "강남역", "역삼역", 2, 3);
 
-        addSection(new Section("3호선", "강남역", "역삼역", 3, 2));
-        addSection(new Section("3호선", "강남역", "역삼역", 6, 5));
-        addSection(new Section("3호선", "강남역", "역삼역", 1, 5));
+        addSection("3호선", "교대역", "남부터미널역", 3, 2);
+        addSection("3호선", "남부터미널역", "양재역", 6, 5);
+        addSection("3호선", "양재역", "매봉역", 1, 5);
 
-        addSection(new Section("신분당선", "강남역", "양재역", 2, 8));
-        addSection(new Section("신분당선", "양재역", "양재시민의숲역", 10, 3));
+        addSection("신분당선", "강남역", "양재역", 2, 8);
+        addSection("신분당선", "양재역", "양재시민의숲역", 10, 3);
     }
 }

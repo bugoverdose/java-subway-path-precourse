@@ -1,5 +1,6 @@
 package subway.utils;
 
+import subway.domain.Station;
 import subway.domain.StationRepository;
 
 import java.util.List;
@@ -33,15 +34,21 @@ public class InputValidator {
         validateNotSameStation(startStationName, endStationName);
     }
 
-    public static void validateNotSameStation (String startStationName, String endStationName) {
+    private static void validateNotSameStation (String startStationName, String endStationName) {
         if (startStationName.equals(endStationName)){
             throw new IllegalArgumentException(SAME_STATION_NAME_INPUT_EXCEPTION);
         }
     }
 
-    public static void validateExistingStation (String stationName) {
+    private static void validateExistingStation (String stationName) {
         if (StationRepository.findByName(stationName) == null){
             throw new IllegalArgumentException(NOT_EXISTING_STATION_NAME_EXCEPTION);
+        }
+    }
+
+    public static void validatePathConnection(List<Station> path) {
+        if (path == null || path.isEmpty()){
+            throw new IllegalArgumentException(NOT_CONNECTED_EXCEPTION);
         }
     }
 }
