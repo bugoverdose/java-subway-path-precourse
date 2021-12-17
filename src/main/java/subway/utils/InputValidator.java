@@ -2,9 +2,22 @@ package subway.utils;
 
 import subway.domain.StationRepository;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import static subway.constants.ExceptionMessages.*;
+import static subway.constants.ExceptionMessages.INVALID_CHOICE_EXCEPTION;
 
 public class InputValidator {
+
+    public static void validateMainMenuInput(String input) {
+        List<String> validateInputs = Stream.of("1", "Q")
+                .collect(Collectors.toList());
+        if (!validateInputs.contains(input)) {
+            throw new IllegalArgumentException(INVALID_CHOICE_EXCEPTION);
+        }
+    }
 
     public static void validateFindPathInput(String startStationName, String endStationName) {
         validateExistingStation(startStationName);

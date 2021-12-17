@@ -5,6 +5,7 @@ import subway.domain.SectionRepository;
 import subway.domain.StationRepository;
 import subway.service.PathService;
 
+import static subway.utils.InputValidator.validateMainMenuInput;
 import static subway.view.InputView.*;
 
 public class SubwayController {
@@ -15,16 +16,36 @@ public class SubwayController {
     }
 
     public void run() {
-        printMainMenu();
+        boolean isRunning = true;
+
+        while (isRunning) {
+            printMainMenu();
+            isRunning = selectMainMenuAction();
+        }
+
+        closeScanner();
+    }
+
+    private boolean selectMainMenuAction() {
         while (true) {
-            String userChoice = requestUserChoiceInput();
-            if (userChoice.equals("1")) {
-                pathService.run();
-            }
-            if (userChoice.equals("Q")) {
-                break;
+            try {
+                String userChoice = requestUserChoiceInput();
+                validateMainMenuInput(userChoice);
+                return runMainMenuAction(userChoice);
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
             }
         }
+    }
+
+    private boolean runMainMenuAction(String userChoice) {
+        if (userChoice.equals("Q")) {
+            return false;
+        }
+        if (userChoice.equals("1")) {
+            pathService.run();
+        }
+        return true;
     }
 
     private void initDatabase() {

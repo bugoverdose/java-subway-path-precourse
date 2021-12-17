@@ -8,6 +8,10 @@ public class InputView {
 
     private static final Scanner scanner = new Scanner(System.in);
 
+    public static void closeScanner() {
+        scanner.close();
+    }
+
     public static String requestUserChoiceInput() {
         System.out.println(REQUEST_USER_CHOICE_INPUT);
         return scanner.next();
