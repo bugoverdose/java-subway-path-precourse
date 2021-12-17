@@ -1,18 +1,44 @@
 package subway.service;
 
-import subway.domain.DistancePath;
+import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
+import org.jgrapht.graph.DefaultWeightedEdge;
+import org.jgrapht.graph.WeightedMultigraph;
+import subway.domain.Line;
+import subway.domain.LineRepository;
+import subway.domain.Section;
 import subway.domain.Station;
 import subway.domain.StationRepository;
-import subway.domain.TimePath;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.PriorityQueue;
 
 import static subway.view.InputView.*;
 import static subway.view.OutputView.showPathInfo;
 
 public class PathService {
+
+    private final WeightedMultigraph<Station, DefaultWeightedEdge> distanceGraph
+            = new WeightedMultigraph(DefaultWeightedEdge.class);
+
+    private final WeightedMultigraph<Station, DefaultWeightedEdge> timeGraph
+            = new WeightedMultigraph(DefaultWeightedEdge.class);
+
+    public PathService() {
+        initGraph(distanceGraph);
+        initGraph(timeGraph);
+    }
+
+    private void initGraph(WeightedMultigraph<Station, DefaultWeightedEdge> graph) {
+        for (Station station : StationRepository.stations()) {
+            graph.addVertex(station);
+        }
+
+        for (Line line : LineRepository.lines()) {
+            for (Section section : line.getSections()) {
+                DefaultWeightedEdge newEdge = graph.addEdge(section.getCurStation(), section.getNextStation());
+                graph.setEdgeWeight(newEdge, section.getDistance());
+            }
+        }
+    }
 
     public void run() {
         printPathViewMenu();
@@ -31,56 +57,34 @@ public class PathService {
     }
 
     private void findPathByMinDistance() {
-        Station startStation = StationRepository.findByName(requestStartStationInput());
-        Station endStation = StationRepository.findByName(requestEndStationInput());
-
-        PriorityQueue<DistancePath> queue = new PriorityQueue<>();
-        queue.addAll(startStation.getDistanceEdges());
-
-        while (!queue.isEmpty()) {
-            DistancePath cur = queue.poll();
-            Station nextStation = cur.getNextStation();
-            if (nextStation == endStation) {
-                cur.getPath().add(0, startStation);
-                showPathInfo(cur.getTotalDistance(), cur.getTotalTime(), cur.getPath());
-                return;
-            }
-
-            for (DistancePath edge : nextStation.getDistanceEdges()) {
-                List<Station> newPath = new ArrayList<>(cur.getPath());
-                newPath.add(edge.getNextStation());
-                int newTotalDistance = edge.getTotalDistance() + cur.getTotalDistance();
-                int newTotalTime = edge.getTotalTime() + cur.getTotalTime();
-                queue.add(new DistancePath(newPath, newTotalDistance, newTotalTime));
-            }
-        }
-        throw new IllegalArgumentException("");
+        List<Station> path = calculateMinimumPath(distanceGraph);
+        printPathInfo(path);
     }
 
     private void findPathByMinTime() {
+        List<Station> path = calculateMinimumPath(timeGraph);
+        printPathInfo(path);
+    }
+
+    private List<Station> calculateMinimumPath(WeightedMultigraph graph) {
         Station startStation = StationRepository.findByName(requestStartStationInput());
         Station endStation = StationRepository.findByName(requestEndStationInput());
 
-        PriorityQueue<TimePath> queue = new PriorityQueue<>();
-        queue.addAll(startStation.getTimeEdges());
+        DijkstraShortestPath dijkstraShortestPath = new DijkstraShortestPath(graph);
+        return dijkstraShortestPath.getPath(startStation, endStation).getVertexList();
+    }
 
-        while (!queue.isEmpty()) {
-            TimePath cur = queue.poll();
-            Station nextStation = cur.getNextStation();
-            if (nextStation == endStation) {
-                cur.getPath().add(0, startStation);
-                showPathInfo(cur.getTotalDistance(), cur.getTotalTime(), cur.getPath());
-                return;
-            }
+    private void printPathInfo(List<Station> path) {
+        int totalDistance = 0;
+        int totalTime = 0;
 
-            for (TimePath edge : nextStation.getTimeEdges()) {
-                List<Station> newPath = new ArrayList<>(cur.getPath());
-                newPath.add(edge.getNextStation());
-                int newTotalDistance = edge.getTotalDistance() + cur.getTotalDistance();
-                int newTotalTime = edge.getTotalTime() + cur.getTotalTime();
-                queue.add(new TimePath(newPath, newTotalDistance, newTotalTime));
-            }
+        for (int index = 0; index <= path.size()-2; index++) {
+            Station curStation = path.get(index);
+            Station nextStation = path.get(index+1);
+            Section section = LineRepository.findBySectionByStations(curStation, nextStation);
+            totalDistance += section.getDistance();
+            totalTime += section.getTime();
         }
-        throw new IllegalArgumentException("");
+        showPathInfo(totalDistance, totalTime, path);
     }
 }

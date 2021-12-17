@@ -9,8 +9,11 @@ import static subway.view.InputView.*;
 public class SubwayController {
     private final PathService pathService = new PathService();
 
-    public void run() {
+    public SubwayController() {
         initDatabase();
+    }
+
+    public void run() {
         printMainMenu();
         while (true) {
             String userChoice = requestUserChoiceInput();
