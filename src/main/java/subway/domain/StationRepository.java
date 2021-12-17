@@ -1,5 +1,7 @@
 package subway.domain;
 
+import static subway.constants.ExceptionMessages.NOT_EXISTING_STATION_NAME_EXCEPTION;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,7 +24,7 @@ public class StationRepository {
             if (!station.getName().equals(name)) continue;
             return station;
         }
-        throw new IllegalArgumentException();
+        return null;
     }
 
     public static void initDatabase() {

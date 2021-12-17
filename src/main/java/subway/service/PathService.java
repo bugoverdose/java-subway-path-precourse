@@ -10,6 +10,7 @@ import subway.domain.StationRepository;
 
 import java.util.List;
 
+import static subway.utils.InputValidator.validateFindPathInput;
 import static subway.view.InputView.*;
 import static subway.view.OutputView.showPathInfo;
 
@@ -38,34 +39,42 @@ public class PathService {
     }
 
     public void run() {
-        printPathViewMenu();
-        while (true) {
+        boolean isSuccessful = false;
+        while (!isSuccessful) {
+            printPathViewMenu();
             String userChoice = requestUserChoiceInput();
-            if (userChoice.equals("1")) {
-                findPathByMinDistance();
-            }
-            if (userChoice.equals("2")) {
-                findPathByMinTime();
-            }
-            if (userChoice.equals("B")) {
-                break;
-            }
+            isSuccessful = selectStationMenuAction(userChoice);
         }
     }
 
-    private void findPathByMinDistance() {
-        List<Station> path = calculateMinimumPath(distanceGraph);
-        printPathInfo(path);
+    private boolean selectStationMenuAction(String userChoice) {
+        if (userChoice.equals("1")) {
+            return findPath(distanceGraph);
+        }
+        if (userChoice.equals("2")) {
+            return findPath(timeGraph);
+        }
+        return userChoice.equals("B");
     }
 
-    private void findPathByMinTime() {
-        List<Station> path = calculateMinimumPath(timeGraph);
-        printPathInfo(path);
+    private boolean findPath(WeightedMultigraph graph) {
+        try {
+            List<Station> path = calculateMinimumPath(graph);
+            printPathInfo(path);
+            return true;
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
 
     private List<Station> calculateMinimumPath(WeightedMultigraph graph) {
-        Station startStation = StationRepository.findByName(requestStartStationInput());
-        Station endStation = StationRepository.findByName(requestEndStationInput());
+        String startStationName = requestStartStationInput();
+        String endStationName = requestEndStationInput();
+        validateFindPathInput(startStationName, endStationName);
+
+        Station startStation = StationRepository.findByName(startStationName);
+        Station endStation = StationRepository.findByName(endStationName);
 
         DijkstraShortestPath dijkstraShortestPath = new DijkstraShortestPath(graph);
         return dijkstraShortestPath.getPath(startStation, endStation).getVertexList();
