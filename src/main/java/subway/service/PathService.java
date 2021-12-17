@@ -12,6 +12,7 @@ import java.util.List;
 
 import static subway.constants.ExceptionMessages.NOT_CONNECTED_EXCEPTION;
 import static subway.utils.InputValidator.validateFindPathInput;
+import static subway.utils.InputValidator.validatePathMenuInput;
 import static subway.view.InputView.*;
 import static subway.view.OutputView.showPathInfo;
 
@@ -44,11 +45,21 @@ public class PathService {
         while (!isSuccessful) {
             printPathViewMenu();
             String userChoice = requestUserChoiceInput();
-            isSuccessful = selectStationMenuAction(userChoice);
+            isSuccessful = selectPathMenuAction(userChoice);
         }
     }
 
-    private boolean selectStationMenuAction(String userChoice) {
+    private boolean selectPathMenuAction(String userChoice) {
+        try {
+            validatePathMenuInput(userChoice);
+            return runPathMenuAction(userChoice);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    private boolean runPathMenuAction(String userChoice) {
         if (userChoice.equals("1")) {
             return findPath(distanceGraph);
         }

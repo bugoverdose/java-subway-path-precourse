@@ -19,6 +19,14 @@ public class InputValidator {
         }
     }
 
+    public static void validatePathMenuInput(String input) {
+        List<String> validateInputs = Stream.of("1", "2", "B")
+                .collect(Collectors.toList());
+        if (!validateInputs.contains(input)) {
+            throw new IllegalArgumentException(INVALID_CHOICE_EXCEPTION);
+        }
+    }
+
     public static void validateFindPathInput(String startStationName, String endStationName) {
         validateExistingStation(startStationName);
         validateExistingStation(endStationName);
