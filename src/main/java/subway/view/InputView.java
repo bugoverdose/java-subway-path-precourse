@@ -16,4 +16,8 @@ public class InputView {
     public static void printMainMenu() {
         System.out.println(REQUEST_MAIN_MENU_SCREEN);
     }
+
+    public static void printPathViewMenu() {
+        System.out.println(REQUEST_PATH_VIEW_MENU_SCREEN);
+    }
 }
