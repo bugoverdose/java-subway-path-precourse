@@ -13,6 +13,15 @@ public class DistancePath implements Comparable<DistancePath> {
         this.totalDistance = distance;
     }
 
+    public DistancePath(List<Station> path, int totalDistance) {
+        this.path = path;
+        this.totalDistance = totalDistance;
+    }
+
+    public List<Station> getPath() {
+        return this.path;
+    }
+
     public Station getNextStation() {
         return this.path.get(path.size()-1);
     }

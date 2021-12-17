@@ -1,5 +1,6 @@
 package subway.service;
 
+import subway.domain.DistancePath;
 import subway.domain.Station;
 import subway.domain.StationRepository;
 import subway.domain.TimePath;
@@ -18,7 +19,7 @@ public class PathService {
         while (true) {
             String userChoice = requestUserChoiceInput();
             if (userChoice.equals("1")) {
-                break;
+                findPathByMinDistance();
             }
             if (userChoice.equals("2")) {
                 findPathByMinTime();
@@ -27,6 +28,31 @@ public class PathService {
                 break;
             }
         }
+    }
+
+    private void findPathByMinDistance() {
+        Station startStation = StationRepository.findByName(requestStartStationInput());
+        Station endStation = StationRepository.findByName(requestEndStationInput());
+
+        PriorityQueue<DistancePath> queue = new PriorityQueue<>();
+        queue.addAll(startStation.getDistanceEdges());
+
+        while (!queue.isEmpty()) {
+            DistancePath cur = queue.poll();
+            Station nextStation = cur.getNextStation();
+            if (nextStation == endStation) {
+                showPathInfo( cur.getTotalDistance(), 0, cur.getPath());
+                return;
+            }
+
+            for (DistancePath edge : nextStation.getDistanceEdges()) {
+                List<Station> newPath = new ArrayList<>(cur.getPath());
+                newPath.add(edge.getNextStation());
+                int newTotalTime = edge.getTotalDistance() + cur.getTotalDistance();
+                queue.add(new DistancePath(newPath, newTotalTime));
+            }
+        }
+        throw new IllegalArgumentException("");
     }
 
     private void findPathByMinTime() {
